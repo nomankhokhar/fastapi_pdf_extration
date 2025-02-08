@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+requests
+pymupdf
+pdfminer.six
+paddleocr
+paddlepaddle
+setuptools
+python-multipart
