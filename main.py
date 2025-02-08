@@ -12,11 +12,10 @@ from paddleocr import PaddleOCR
 from pydantic import BaseModel
 import time
 from PIL import Image
+import uuid  
 
 app = FastAPI()
 ocr = PaddleOCR()
-
-
 
 # Define request model
 class PDFRequest(BaseModel):
@@ -27,8 +26,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all HTTP methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  
+    allow_headers=["*"], 
 )
 
 def is_valid_pdf(url):
@@ -114,9 +113,15 @@ def ocr_pdf(pdf_path):
 
 def process_pdf_from_url(pdf_url):
     if is_valid_pdf(pdf_url):
-        download_path = "downloaded.pdf"
+        # ADDED: Generate a unique file name for each request
+        unique_id = uuid.uuid4().hex  # Generates a random unique string
+        download_path = f"downloaded_{unique_id}.pdf"  # Unique file name
         if download_pdf(pdf_url, download_path):
-            return ocr_pdf(download_path)
+            result = ocr_pdf(download_path)
+            # ADDED: Delete the file after processing
+            if os.path.exists(download_path):
+                os.remove(download_path)
+            return result
     return None
 
 @app.post("/extract")
