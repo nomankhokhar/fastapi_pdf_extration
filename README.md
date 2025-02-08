@@ -7,6 +7,7 @@ There are several feature and validation are implemented.
 - Get URL from POST request.
 - Validate the URL it's contain valid PDF.
 - Download the PDF in Chunks
+- To handle multiple requests add unique file name to download and process it for every request
 - Extract Text using pymupdf if PDF is Searchale
 - Extract Text using PaddleOCR if PDF is not searchable
 - Return Response (After that delete the pdf file).
